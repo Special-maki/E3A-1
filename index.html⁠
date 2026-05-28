@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卒業研究：マイコンを用いた自動水やり機の開発</title>
+    <style>
+        /* 全体の基本設定 */
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        /* ヘッダー（サイトの一番上） */
+        header {
+            background-color: #2e7d32; /* 植物をイメージした緑 */
+            color: #fff;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+        header p {
+            margin: 10px 0 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* ナビゲーションメニュー */
+        nav {
+            background-color: #1b5e20;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        nav a {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            padding: 15px 20px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        nav a:hover {
+            background-color: #2e7d32;
+        }
+
+        /* メインコンテンツの外枠 */
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* 各セクション（章）の設定 */
+        section {
+            background-color: #fff;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        section h2 {
+            color: #2e7d32;
+            border-left: 5px solid #2e7d32;
+            padding-left: 10px;
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
+
+        /* 画像を入れる枠のスタイル */
+        .image-box {
+            background-color: #eee;
+            border: 2px dashed #ccc;
+            padding: 40px 10px;
+            text-align: center;
+            margin: 15px 0;
+            color: #666;
+            border-radius: 4px;
+        }
+
+        /* テーブル（仕様など）のスタイル */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f1f8e9;
+            color: #2e7d32;
+        }
+
+        /* フッター（サイトの一番下） */
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        /* スマートフォン向けの調整 */
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.5rem; }
+            nav a { padding: 10px 15px; font-size: 0.9rem; }
+            section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>マイコンを用いた自動水やり機の開発</h1>
+        <p>〇〇県立〇〇工業高等学校 卒業研究発表</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#intro">研究背景・目的</a></li>
+            <li><a href="#system">システムの概要</a></li>
+            <li><a href="#hardware">ハードウェア</a></li>
+            <li><a href="#software">ソフトウェア</a></li>
+            <li><a href="#result">結果・今後の課題</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+
+        <section id="intro">
+            <h2>1. 研究背景・目的</h2>
+            <p>ここに研究の背景や、なぜ自動水やり機を作ろうと思ったのかの理由を書きましょう。</p>
+            <p>（例：長期休暇中の学校の植物への水やりを自動化し、労力を削減するため。または、家庭での園芸の効率化など）</p>
+        </section>
+
+        <section id="system">
+            <h2>2. システムの概要</h2>
+            <p>この自動水やり機がどのように動くのか、全体の仕組みを文章で説明します。</p>
+            <p>（例：土壌水分センサーで土の乾燥具合を検知し、一定の値以下になったらマイコンがリレーモジュールを動かしてポンプから水を供給する、など）</p>
+            
+            <div class="image-box">
+                【ここにシステム構成図や全体の写真を配置（imgタグに置き換えてください）】
+            </div>
+        </section>
+
+        <section id="hardware">
+            <h2>3. ハードウェアの構成</h2>
+            <p>使用した部品の一覧や、回路設計について説明します。</p>
+            
+            <h3>主要部品一覧</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>部品名</th>
+                        <th>型番・仕様</th>
+                        <th>役割</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>マイコンボード</td>
+                        <td>Arduino Uno / ESP32 など</td>
+                        <td>全体の制御・センサー値の処理</td>
+                    </tr>
+                    <tr>
+                        <td>土壌水分センサー</td>
+                        <td>〇〇製</td>
+                        <td>土壌の水分量をアナログ値で測定</td>
+                    </tr>
+                    <tr>
+                        <td>給水ポンプ</td>
+                        <td>5V 小型水中ポンプ</td>
+                        <td>植物への水やり用</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="image-box">
+                【ここに回路図や製作した基板の写真を配置】
+            </div>
+        </section>
+
+        <section id="software">
+            <h2>4. ソフトウェアの処理フロー</h2>
+            <p>マイコンに書き込んだプログラムの動き（フローチャートなど）や、こだわった部分を解説します。</p>
+            <p>（例：夜間だけ動作するように光センサーも組み合わせた、水のやりすぎを防ぐためにタイマーを設定した、など）</p>
+            
+            <div class="image-box">
+                【ここにプログラムのフローチャートやソースコードのスクリーンショットを配置】
+            </div>
+        </section>
+
+        <section id="result">
+            <h2>5. 成果と今後の課題</h2>
+            <h3>実験結果</h3>
+            <p>実際に作ってみて、うまく水やりができたかどうかの結果を書きます。</p>
+            
+            <h3>今後の課題</h3>
+            <ul>
+                <li>バッテリーの持ち（省電力化）の改善</li>
+                <li>Wi-Fiを搭載し、スマートフォンへ水分量を通知する機能の追加</li>
+                <li>ケースの防水性の向上</li>
+            </ul>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 卒業研究グループ（あなたの氏名や班の番号など） All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
