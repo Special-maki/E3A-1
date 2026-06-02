@@ -213,42 +213,24 @@
                         <section id="process">
             <h2>4. 制作の過程</h2>
             <p>これまでの開発スケジュールと、各段階での主な進捗です。</p>
-            
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-date">4月〜5月</div>
-                    <div class="timeline-content">
-                        <h4>企画・情報収集</h4>
-                        <p>研究テーマの決定。自動水やり機に必要な部品（マイコン、土壌水分センサー、ポンプなど）の選定と調達を行いました。</p>
-                    </div>
-                </div>
+            <div class="blog-container">
                 
-                <div class="timeline-item">
-                    <div class="timeline-date">6月〜7月</div>
-                    <div class="timeline-content">
-                        <h4>回路設計・ブレッドボードでの実験</h4>
-                        <p>Arduinoとセンサー、リレーモジュールをブレッドボード上で接続し、基本動作のテストを行いました。センサーの閾値（しきいち）の設定に苦労しました。</p>
+                <article class="blog-card">
+                    <div class="blog-meta">
+                        <span class="blog-date">2026年6月2日</span>
+                        <span class="blog-category cat-hardware">ハードウェア</span>
                     </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-date">9月〜10月</div>
-                    <div class="timeline-content">
-                        <h4>プログラム開発・本体製作</h4>
-                        <p>自動水やりのプログラムを執筆。また、水回りを扱うため、マイコンが濡れないようにアクリル板やケースを使った外装の加工を行いました。</p>
+                    <h3 class="blog-title">土壌水分センサーの値を読み取る（トラブル発生と解決）</h3>
+                    <div class="blog-text">
+                        <p>今日は、購入した土壌水分センサーをマイコン（Arduino）に接続し、シリアルモニターでアナログ値を読み取る実験を行いました。</p>
+                        <p><strong>【問題発生】</strong><br>
+                        コップの水にセンサーを入れても、数値が全く変化しないトラブルが発生しました。回路図を何度も見直したところ、VCC（電源）とGND（接地）を逆に配線していることに気づきました。マイコンを壊さずに済んで良かったです。</p>
+                        <p><strong>【次回への課題】</strong><br>
+                        配線を直したところ、乾燥時「1023」、水中「250」付近の値が安定して取れるようになりました。次回はこの値を使って、リレーモジュールを動かすプログラムを作ります。</p>
                     </div>
+                </article>
                 </div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-date">11月〜12月</div>
-                    <div class="timeline-content">
-                        <h4>実証実験・改良</h4>
-                        <p>実際に学校のプランターに設置して1ヶ月間の動作テストを実施。無事に水やりができることを確認し、現在は省電力化のためのプログラム改良を行っています。</p>
-                    </div>
-                </div>
-            </div>
         </section>
-
 
         <section id="software">
             <h2>5. ソフトウェアの処理フロー</h2>
