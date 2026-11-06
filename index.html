@@ -5,40 +5,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>課題研究：マイコンを用いた自動水やり機の開発</title>
     <style>
-        /* 全体の基本設定 */
+        /* ==========================================
+           1. 基本設定とカラー定義
+           ========================================== */
+        :root {
+            --primary: #2e7d32;
+            --primary-dark: #1b5e20;
+            --primary-light: #4caf50;
+            --accent: #81c784;
+            --bg-body: #f4f7f4;
+            --bg-card: #ffffff;
+            --text-main: #2c3e50;
+            --text-sub: #607d8b;
+            --border-color: #e0e6ed;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-            line-height: 1.6;
-            color: #333;
+            font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.8;
+            color: var(--text-main);
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
+            background-color: var(--bg-body);
         }
 
-        /* ヘッダー（サイトの一番上） */
+        /* ==========================================
+           2. ヘッダー & ナビゲーション
+           ========================================== */
         header {
-            background-color: #2e7d32; /* 植物をイメージした緑 */
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
             color: #fff;
-            padding: 40px 20px;
+            padding: 60px 20px 40px;
             text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
+
         header h1 {
             margin: 0;
-            font-size: 2rem;
-        }
-        header p {
-            margin: 10px 0 0 0;
-            font-size: 1.1rem;
-            opacity: 0.9;
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+            font-weight: 700;
         }
 
-        /* ナビゲーションメニュー */
+        header p {
+            margin: 12px 0 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+            letter-spacing: 0.5px;
+        }
+
         nav {
-            background-color: #1b5e20;
+            background-color: rgba(27, 94, 32, 0.95);
+            backdrop-filter: blur(8px);
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
+
         nav ul {
             list-style: none;
             margin: 0;
@@ -47,87 +77,223 @@
             justify-content: center;
             flex-wrap: wrap;
         }
+
         nav a {
             display: block;
             color: #fff;
             text-decoration: none;
-            padding: 15px 20px;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-        nav a:hover {
-            background-color: #2e7d32;
+            padding: 16px 20px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
         }
 
-        /* メインコンテンツの外枠 */
+        nav a:hover {
+            background-color: var(--primary);
+            color: #e8f5e9;
+        }
+
+        /* ==========================================
+           3. コンテナ & 各セクション
+           ========================================== */
         .container {
-            max-width: 1000px;
-            margin: 30px auto;
+            max-width: 960px;
+            margin: 40px auto;
             padding: 0 20px;
         }
 
-        /* 各セクション（章）の設定 */
         section {
-            background-color: #fff;
-            padding: 30px;
-            margin-bottom: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        section h2 {
-            color: #2e7d32;
-            border-left: 5px solid #2e7d32;
-            padding-left: 10px;
-            margin-top: 0;
-            font-size: 1.5rem;
+            background-color: var(--bg-card);
+            padding: 40px;
+            margin-bottom: 35px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        /* 画像を入れる枠のスタイル */
+        section h2 {
+            color: var(--primary-dark);
+            font-size: 1.6rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--primary-light);
+            display: flex;
+            align-items: center;
+        }
+
+        section h3 {
+            color: var(--primary);
+            font-size: 1.25rem;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        ul li {
+            margin-bottom: 8px;
+        }
+
+        /* ==========================================
+           4. 制作の過程（タイムライン風カード）
+           ========================================== */
+        .timeline-item {
+            background-color: #fafdfa;
+            border: 1px solid var(--border-color);
+            border-left: 5px solid var(--primary);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .timeline-date {
+            display: inline-block;
+            background-color: var(--primary-light);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .timeline-item h3 {
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+
+        /* ==========================================
+           5. 画像 & メディア枠
+           ========================================== */
+        .img-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .img-container img {
+            width: 100%;
+            max-width: 520px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid #e0e0e0;
+        }
+
+        .img-caption {
+            color: var(--text-sub);
+            font-size: 0.85rem;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
         .image-box {
-            background-color: #eee;
-            border: 2px dashed #ccc;
+            background-color: #f1f5f1;
+            border: 2px dashed #a5d6a7;
             padding: 40px 10px;
             text-align: center;
-            margin: 15px 0;
-            color: #666;
-            border-radius: 4px;
+            margin: 20px 0;
+            color: #558b2f;
+            border-radius: 8px;
+            font-weight: bold;
         }
 
-        /* テーブル（仕様など）のスタイル */
+        /* ==========================================
+           6. テーブル（パーツ仕様一覧）
+           ========================================== */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 15px 0;
+            margin: 20px 0;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
+
         th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
+            border: 1px solid var(--border-color);
+            padding: 14px 16px;
             text-align: left;
         }
+
         th {
-            background-color: #f1f8e9;
-            color: #2e7d32;
+            background-color: #e8f5e9;
+            color: var(--primary-dark);
+            font-weight: bold;
         }
 
-        /* お問い合わせボタンのホバー演出 */
-        button[type="submit"]:hover {
-            background-color: #1b5e20 !important;
+        tr:nth-child(even) {
+            background-color: #fcfdfe;
         }
 
-        /* スマートフォン向けの調整 */
-        @media (max-width: 600px) {
-            header h1 { font-size: 1.5rem; }
-            nav a { padding: 10px 15px; font-size: 0.9rem; }
-            section { padding: 20px; }
+        /* ==========================================
+           7. お問い合わせフォーム
+           ========================================== */
+        .form-group {
+            margin-bottom: 20px;
         }
 
-        /* フッター（サイトの一番下） */
-        footer {
-            background-color: #333;
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--text-main);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background-color: #fcfcfc;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+            background-color: #fff;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: #fff;
+            padding: 14px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(46, 125, 50, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(46, 125, 50, 0.4);
+        }
+
+        /* ==========================================
+           8. レスポンシブ対応 & フッター
+           ========================================== */
+        @media (max-width: 768px) {
+            header { padding: 40px 15px 30px; }
+            header h1 { font-size: 1.6rem; }
+            nav a { padding: 12px 14px; font-size: 0.85rem; }
+            section { padding: 25px 20px; }
+        }
+
+        footer {
+            background-color: #212121;
+            color: #b0bec5;
             text-align: center;
-            padding: 20px;
-            margin-top: 50px;
+            padding: 25px 20px;
+            margin-top: 60px;
+            font-size: 0.9rem;
         }
     </style>
 </head>
@@ -170,9 +336,9 @@
             <p>これまでの開発スケジュールと、各段階での主な進捗です。</p>
             
             <!-- 5月22日 -->
-            <fieldset style="margin-bottom: 25px; padding: 20px; border: 1px solid #ccc; border-radius: 6px;">
-                <legend><b>2026年5月22日 【構想】</b></legend>
-                <h3 style="margin-top: 5px; color: #2e7d32;">使用する部品や、システムそのものの構想など</h3>
+            <div class="timeline-item">
+                <span class="timeline-date">2026年5月22日 【構想】</span>
+                <h3>使用する部品や、システムそのものの構想など</h3>
                 <p>今日は、水やり機を完成させるために必要な部品を考えるために、実際に水をやる機構や使用する機器を考えました。</p>
                 <p><b>【議論】</b><br>
                 水をやるタイミングを、土壌水分センサーで土壌の水分量を測って決めるということはすぐに決まったのですが、肝心な水をやる機構をどのような手段で実現するかで少し揉めました。</p>
@@ -184,16 +350,16 @@
                 <p>この二つの意見が出てかなり揉めましたが、回路構成や制御がシンプルになるため、最終的にはポンプ自体をON/OFFする方式に決定しました。</p>
                 <p><b>【次回の予定】</b><br>実際にマイコンを用いてプログラムの方法などを学んでいく。</p>
                 
-                <div style="text-align: center; margin-top: 15px;">
-                    <img src="IMG_0668.jpg" alt="構想のホワイトボード" style="width:100%; max-width:500px; border-radius: 6px; border: 1px solid #ddd;">
-                    <small style="color: #666; display: block; margin-top: 5px;">▲ 写真1：出た案をそのままホワイトボードに書いて議論した様子</small>
+                <div class="img-container">
+                    <img src="IMG_0668.jpg" alt="構想のホワイトボード">
+                    <div class="img-caption">▲ 写真1：出た案をそのままホワイトボードに書いて議論した様子</div>
                 </div>
-            </fieldset>
+            </div>
 
             <!-- 6月5日 -->
-            <fieldset style="margin-bottom: 25px; padding: 20px; border: 1px solid #ccc; border-radius: 6px;">
-                <legend><b>2026年6月5日 【構想の続きと実験】</b></legend>
-                <h3 style="margin-top: 5px; color: #2e7d32;">購入する物品を決め、実際にArduinoを用いた実験</h3>
+            <div class="timeline-item">
+                <span class="timeline-date">2026年6月5日 【構想の続きと実験】</span>
+                <h3>購入する物品を決め、実際にArduinoを用いた実験</h3>
                 <p>今日は、前回決まらなかった購入する物品を決定し、その後に実際にArduinoを用いて稼働実験をしました。</p>
                 <p><b>【実験】</b><br>
                 基礎的なプログラムを組み、実際に動くかどうかを確認しながらArduinoの使い方を学びました。</p>
@@ -209,16 +375,16 @@
                 <p>今回の実験はプログラム担当の班員2名が実際にArduinoを動かして行いました。順調に処理が進み、かなりArduinoの扱いに慣れてくることができました。</p>
                 <p><b>【次回の予定】</b><br>Arduinoをさらに理解する。まだ触っていない班員も実際に触れて触感を掴む。</p>
                 
-                <div style="text-align: center; margin-top: 15px;">
-                    <img src="bullet board.jpg" alt="スイッチとLEDの制御実験" style="width:100%; max-width:500px; border-radius: 6px; border: 1px solid #ddd;">
-                    <small style="color: #666; display: block; margin-top: 5px;">▲ 写真2：ボタンを押してLEDを光らせる制御回路を構築</small>
+                <div class="img-container">
+                    <img src="bullet board.jpg" alt="スイッチとLEDの制御実験">
+                    <div class="img-caption">▲ 写真2：ボタンを押してLEDを光らせる制御回路を構築</div>
                 </div>
-            </fieldset>
+            </div>
             
             <!-- 6月10日 -->
-            <fieldset style="margin-bottom: 25px; padding: 20px; border: 1px solid #ccc; border-radius: 6px;">
-                <legend><b>2026年6月10日 【実験の続き】</b></legend>
-                <h3 style="margin-top: 5px; color: #2e7d32;">Arduino Uno Qを用いた実験</h3>
+            <div class="timeline-item">
+                <span class="timeline-date">2026年6月10日 【実験の続き】</span>
+                <h3>Arduino Uno Qを用いた実験</h3>
                 <p>今日は、Arduino Uno Qを使って実験をしました。</p>
                 <p><b>【実験】</b><br>
                 前回のArduino Unoよりも高性能なArduino Uno Qを使用して実験を行いました。</p>
@@ -233,16 +399,16 @@
                 <p>今回の「土壌水分を測って水をあげる」というシンプルな目的においては、Uno Qは過剰スペックだと判断し、基本的には通常のArduino Unoを使って進める方針としました。</p>
                 <p><b>【次回の予定】</b><br>部品が届き次第、センサーやポンプの稼働実験を開始する。</p>
                 
-                <div style="text-align: center; margin-top: 15px;">
-                    <img src="color.jpg" alt="Arduino Uno QのLED制御" style="width:100%; max-width:500px; border-radius: 6px; border: 1px solid #ddd;">
-                    <small style="color: #666; display: block; margin-top: 5px;">▲ 写真3：LEDの光る色や強さをPCから制御する実験</small>
+                <div class="img-container">
+                    <img src="color.jpg" alt="Arduino Uno QのLED制御">
+                    <div class="img-caption">▲ 写真3：LEDの光る色や強さをPCから制御する実験</div>
                 </div>
-            </fieldset>
+            </div>
 
             <!-- 10月2日 -->
-            <fieldset style="margin-bottom: 25px; padding: 20px; border: 1px solid #ccc; border-radius: 6px;">
-                <legend><b>2026年10月2日 【回路設計&制作開始】</b></legend>
-                <h3 style="margin-top: 5px; color: #2e7d32;">土壌水分センサーを用いた制御プログラミング</h3>
+            <div class="timeline-item">
+                <span class="timeline-date">2026年10月2日 【回路設計&制作開始】</span>
+                <h3>土壌水分センサーを用いた制御プログラミング</h3>
                 <p>発注していた部品がようやく手元に届いたため、一気に制作を進めていきます！</p>
                 <p><b>【実験】</b><br>
                 ついに土壌水分センサーを用いた実習実験を行いました。</p>
@@ -250,15 +416,15 @@
                 <ul>
                     <li>土壌センサーで水分量を計測し、数値が閾値を超えたら一方のLEDを消灯し、もう一方のLEDを点灯させる制御</li>
                 </ul>
-                <p>水分量が一定以上になると狙い通りLEDが切り替わり、自動制御の要となるプログラミングは大成功でした。今回はArduino Unoで実験を行いましたが、実験中に<b>「データベースを使って、いつどれだけ水やりをしたかの履歴を記録・管理したい」</b>という新たなアイデアが出ました。　</p>
+                <p>水分量が一定以上になると狙い通りLEDが切り替わり、自動制御の要となるプログラミングは大成功でした。今回はArduino Unoで実験を行いましたが、実験中に<b>「データベースを使って、いつどれだけ水やりをしたかの履歴を記録・管理したい」</b>という新たなアイデアが出ました。</p>
                 <p>ネット経由でデータベース管理を行うにはArduino Uno Qが必要となるため、一度見送っていたUno Qを再度活用する方針で進めていくことになりました。</p>
                 <p><b>【次回の予定】</b><br>追加物品が届き次第、ポンプの稼働実験を行う。</p>
                 
-                <div style="text-align: center; margin-top: 15px;">
-                    <img src="IMG_0761.jpeg" alt="土壌センサーによるLED切替実験" style="width:100%; max-width:500px; border-radius: 6px; border: 1px solid #ddd;">
-                    <small style="color: #666; display: block; margin-top: 5px;">▲ 写真4：水分量の変化に反応してLEDの点灯が切り替わる様子</small>
+                <div class="img-container">
+                    <img src="IMG_0761.jpeg" alt="土壌センサーによるLED切替実験">
+                    <div class="img-caption">▲ 写真4：水分量の変化に反応してLEDの点灯が切り替わる様子</div>
                 </div>
-            </fieldset>
+            </div>
             
         </section>
 
@@ -352,31 +518,31 @@
             <p>本研究に関するご質問やご感想などがありましたら、以下のフォームよりお気軽にご連絡ください。</p>
             
             <form action="https://formspree.io/f/xvkgoegv" method="POST">
-                <div style="margin-bottom: 15px;">
-                    <label for="name"><b>お名前</b></label><br>
-                    <input type="text" id="name" name="name" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                <div class="form-group">
+                    <label for="name">お名前</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
                 </div>
                 
-                <div style="margin-bottom: 15px;">
-                    <label for="email"><b>メールアドレス</b></label><br>  
-                    <input type="email" id="email" name="email" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                <div class="form-group">
+                    <label for="email">メールアドレス</label>  
+                    <input type="email" id="email" name="email" class="form-control" required>
                 </div>
                 
-                <div style="margin-bottom: 15px;">
-                    <label for="message"><b>お問い合わせ内容</b></label><br>
-                    <textarea id="message" name="message" rows="5" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;"></textarea>
+                <div class="form-group">
+                    <label for="message">お問い合わせ内容</label>
+                    <textarea id="message" name="message" rows="5" class="form-control" required></textarea>
                 </div>
                 
-                <div style="text-align: center;">
-                    <button type="submit" style="background-color: #2e7d32; color: #fff; padding: 12px 35px; border: none; border-radius: 4px; font-size: 1.1rem; cursor: pointer; font-weight: bold; transition: background 0.3s;">送信する</button>
+                <div style="text-align: center; margin-top: 30px;">
+                    <button type="submit" class="btn-submit">送信する</button>
                 </div>
             </form>
         </section>
 
-        
-        <div style="text-align: center; margin-top: 30px;">
-            <img src="King.jpg" alt="Thank you" style="width:100%; max-width:250px; border-radius: 8px;">
-            <small style="color: #666; display: block; margin-top: 5px; font-weight: bold;">Thank you!</small>
+        <!-- サンクス画像 -->
+        <div class="img-container" style="margin-top: 40px;">
+            <img src="King.jpg" alt="Thank you" style="max-width: 220px; border-radius: 12px;">
+            <div class="img-caption" style="font-size: 0.95rem; margin-top: 10px;">Thank you!</div>
         </div>
     </div>
 
