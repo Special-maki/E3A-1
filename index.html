@@ -4,22 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>課題研究：マイコンを用いた自動水やり機の開発</title>
+    <!-- 上品な明朝体とゴシック体をGoogle Fontsから読み込み -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Shippori+Mincho:wght@500;600;700&display=swap" rel="stylesheet">
+    
     <style>
         /* ==========================================
-           1. 基本設定とカラー定義
+           1. 基本設定・カラーパレット（ボタニカル＆エレガント）
            ========================================== */
         :root {
-            --primary: #2e7d32;
-            --primary-dark: #1b5e20;
-            --primary-light: #4caf50;
-            --accent: #81c784;
-            --bg-body: #f4f7f4;
-            --bg-card: #ffffff;
-            --text-main: #2c3e50;
-            --text-sub: #607d8b;
-            --border-color: #e0e6ed;
-            --shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.1);
+            --primary: #163a2c;        /* 深いフォレストグリーン */
+            --primary-light: #265945;  /* 落ち着いたセージグリーン */
+            --accent: #b89b5e;         /* 上品なシャンパンゴールド */
+            --accent-light: #f3efe6;   /* 淡いゴールドベージュ */
+            --bg-body: #faf9f6;        /* 温かみのあるアイボリー */
+            --bg-card: #ffffff;        /* ピュアホワイト */
+            --text-main: #242927;      /* 柔らかなチャコールブラック */
+            --text-sub: #66706c;       /* 上品なグレー */
+            --border-color: #e6e4dd;   /* 繊細なボーダー色 */
+            --shadow: 0 10px 30px rgba(22, 58, 44, 0.04);
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         * {
@@ -27,46 +35,66 @@
         }
 
         body {
-            font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Meiryo", "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.8;
+            font-family: 'Noto Sans JP', "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+            font-weight: 400;
+            line-height: 1.9;
             color: var(--text-main);
             margin: 0;
             padding: 0;
             background-color: var(--bg-body);
+            letter-spacing: 0.04em;
+        }
+
+        /* 見出し用の明朝体クラス */
+        h1, h2, h3, .serif {
+            font-family: 'Shippori Mincho', "Yu Mincho", "Hiragino Mincho ProN", serif;
         }
 
         /* ==========================================
            2. ヘッダー & ナビゲーション
            ========================================== */
         header {
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            background: linear-gradient(160deg, #0f291e 0%, var(--primary) 100%);
             color: #fff;
-            padding: 60px 20px 40px;
+            padding: 80px 20px 65px;
             text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .header-subtitle {
+            color: var(--accent);
+            font-size: 0.9rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            display: block;
+            font-weight: 500;
         }
 
         header h1 {
             margin: 0;
-            font-size: 2.2rem;
-            letter-spacing: 1px;
-            font-weight: 700;
+            font-size: 2.3rem;
+            letter-spacing: 0.12em;
+            font-weight: 600;
+            line-height: 1.4;
         }
 
         header p {
-            margin: 12px 0 0 0;
-            font-size: 1.1rem;
-            opacity: 0.9;
-            letter-spacing: 0.5px;
+            margin: 18px 0 0 0;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 0.15em;
+            font-weight: 300;
         }
 
         nav {
-            background-color: rgba(27, 94, 32, 0.95);
-            backdrop-filter: blur(8px);
+            background-color: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            border-bottom: 1px solid var(--border-color);
         }
 
         nav ul {
@@ -80,90 +108,153 @@
 
         nav a {
             display: block;
-            color: #fff;
+            color: var(--primary);
             text-decoration: none;
-            padding: 16px 20px;
-            font-weight: 600;
-            font-size: 0.95rem;
+            padding: 18px 22px;
+            font-weight: 500;
+            font-size: 0.88rem;
+            letter-spacing: 0.08em;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
             transition: all 0.3s ease;
+            transform: translateX(-50%);
         }
 
         nav a:hover {
-            background-color: var(--primary);
-            color: #e8f5e9;
+            color: var(--accent);
+        }
+
+        nav a:hover::after {
+            width: 70%;
         }
 
         /* ==========================================
            3. コンテナ & 各セクション
            ========================================== */
         .container {
-            max-width: 960px;
-            margin: 40px auto;
-            padding: 0 20px;
+            max-width: 920px;
+            margin: 50px auto;
+            padding: 0 24px;
         }
 
         section {
             background-color: var(--bg-card);
-            padding: 40px;
-            margin-bottom: 35px;
-            border-radius: 12px;
+            padding: 50px 55px;
+            margin-bottom: 45px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
             box-shadow: var(--shadow);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .section-num {
+            display: block;
+            font-family: 'Shippori Mincho', serif;
+            color: var(--accent);
+            font-size: 0.95rem;
+            letter-spacing: 0.2em;
+            margin-bottom: 4px;
         }
 
         section h2 {
-            color: var(--primary-dark);
-            font-size: 1.6rem;
+            color: var(--primary);
+            font-size: 1.75rem;
+            font-weight: 600;
             margin-top: 0;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid var(--primary-light);
-            display: flex;
-            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+            letter-spacing: 0.08em;
+            position: relative;
+        }
+
+        section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background-color: var(--accent);
         }
 
         section h3 {
-            color: var(--primary);
+            color: var(--primary-light);
             font-size: 1.25rem;
-            margin-top: 25px;
-            margin-bottom: 15px;
+            font-weight: 600;
+            margin-top: 32px;
+            margin-bottom: 14px;
+            letter-spacing: 0.05em;
         }
 
         ul {
-            padding-left: 20px;
+            padding-left: 22px;
         }
 
         ul li {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+        }
+
+        ul li::marker {
+            color: var(--accent);
         }
 
         /* ==========================================
-           4. 制作の過程（タイムライン風カード）
+           4. 制作の過程（エレガント・タイムライン）
            ========================================== */
+        .timeline-wrapper {
+            position: relative;
+            padding-left: 28px;
+            border-left: 1px solid var(--accent);
+            margin-top: 30px;
+        }
+
         .timeline-item {
-            background-color: #fafdfa;
+            position: relative;
+            background-color: var(--bg-body);
             border: 1px solid var(--border-color);
-            border-left: 5px solid var(--primary);
-            border-radius: 8px;
-            padding: 25px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            border-radius: 4px;
+            padding: 30px 35px;
+            margin-bottom: 35px;
+        }
+
+        /* タイムラインの丸い装飾点 */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -34px;
+            top: 32px;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background-color: var(--bg-card);
+            border: 2px solid var(--accent);
         }
 
         .timeline-date {
             display: inline-block;
-            background-color: var(--primary-light);
-            color: #fff;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            margin-bottom: 10px;
+            color: var(--accent);
+            border-bottom: 1px solid var(--accent);
+            padding-bottom: 2px;
+            font-size: 0.88rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
         }
 
         .timeline-item h3 {
-            margin-top: 5px;
-            margin-bottom: 15px;
+            margin-top: 4px;
+            margin-bottom: 18px;
+            color: var(--primary);
         }
 
         /* ==========================================
@@ -171,33 +262,36 @@
            ========================================== */
         .img-container {
             text-align: center;
-            margin: 20px 0;
+            margin: 28px 0 10px;
         }
 
         .img-container img {
             width: 100%;
-            max-width: 520px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            border: 1px solid #e0e0e0;
+            max-width: 540px;
+            border-radius: 2px;
+            padding: 6px;
+            background-color: #fff;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
         }
 
         .img-caption {
             color: var(--text-sub);
-            font-size: 0.85rem;
-            margin-top: 8px;
-            font-weight: 600;
+            font-size: 0.82rem;
+            margin-top: 10px;
+            letter-spacing: 0.05em;
         }
 
         .image-box {
-            background-color: #f1f5f1;
-            border: 2px dashed #a5d6a7;
-            padding: 40px 10px;
+            background-color: var(--accent-light);
+            border: 1px dashed var(--accent);
+            padding: 45px 20px;
             text-align: center;
-            margin: 20px 0;
-            color: #558b2f;
-            border-radius: 8px;
-            font-weight: bold;
+            margin: 25px 0;
+            color: var(--primary);
+            border-radius: 4px;
+            font-size: 0.92rem;
+            letter-spacing: 0.08em;
         }
 
         /* ==========================================
@@ -206,102 +300,113 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
-            overflow: hidden;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            margin: 25px 0;
+            font-size: 0.95rem;
         }
 
         th, td {
-            border: 1px solid var(--border-color);
-            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 18px;
             text-align: left;
         }
 
         th {
-            background-color: #e8f5e9;
-            color: var(--primary-dark);
-            font-weight: bold;
+            background-color: var(--primary);
+            color: #fff;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            font-family: 'Shippori Mincho', serif;
         }
 
-        tr:nth-child(even) {
-            background-color: #fcfdfe;
+        tr:hover {
+            background-color: var(--accent-light);
+            transition: background-color 0.2s ease;
         }
 
         /* ==========================================
            7. お問い合わせフォーム
            ========================================== */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            font-weight: bold;
-            color: var(--text-main);
+            font-weight: 500;
+            font-size: 0.92rem;
+            color: var(--primary);
+            letter-spacing: 0.05em;
         }
 
         .form-control {
             width: 100%;
-            padding: 12px;
+            padding: 14px 16px;
             border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 1rem;
-            transition: border-color 0.3s, box-shadow 0.3s;
-            background-color: #fcfcfc;
+            border-radius: 2px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background-color: var(--bg-body);
         }
 
         .form-control:focus {
             outline: none;
-            border-color: var(--primary-light);
-            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+            border-color: var(--accent);
             background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(184, 155, 94, 0.15);
         }
 
         .btn-submit {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            background-color: var(--primary);
             color: #fff;
-            padding: 14px 40px;
-            border: none;
-            border-radius: 30px;
-            font-size: 1rem;
+            padding: 15px 50px;
+            border: 1px solid var(--primary);
+            border-radius: 2px;
+            font-size: 0.95rem;
+            letter-spacing: 0.15em;
             cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 4px 10px rgba(46, 125, 50, 0.3);
+            font-weight: 500;
             transition: all 0.3s ease;
         }
 
         .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(46, 125, 50, 0.4);
+            background-color: transparent;
+            color: var(--primary);
+            border-color: var(--primary);
         }
 
         /* ==========================================
            8. レスポンシブ対応 & フッター
            ========================================== */
         @media (max-width: 768px) {
-            header { padding: 40px 15px 30px; }
-            header h1 { font-size: 1.6rem; }
-            nav a { padding: 12px 14px; font-size: 0.85rem; }
-            section { padding: 25px 20px; }
+            header { padding: 55px 15px 45px; }
+            header h1 { font-size: 1.65rem; }
+            nav a { padding: 12px 12px; font-size: 0.8rem; }
+            section { padding: 30px 22px; }
+            .timeline-wrapper { padding-left: 18px; }
+            .timeline-item { padding: 22px 20px; }
+            .timeline-item::before { left: -24px; }
         }
 
         footer {
-            background-color: #212121;
-            color: #b0bec5;
+            background-color: #0f291e;
+            color: rgba(255, 255, 255, 0.7);
             text-align: center;
-            padding: 25px 20px;
-            margin-top: 60px;
-            font-size: 0.9rem;
+            padding: 35px 20px;
+            margin-top: 70px;
+            font-size: 0.85rem;
+            letter-spacing: 0.08em;
+            border-top: 2px solid var(--accent);
         }
     </style>
 </head>
 <body>
 
     <header>
+        <span class="header-subtitle">Graduation Research Project</span>
         <h1>マイコンを用いた自動水やり機の開発</h1>
-        <p>千葉県立市川工業高等学校　課題研究</p>
+        <p>千葉県立市川工業高等学校 課題研究</p>
     </header>
 
     <nav>
@@ -319,7 +424,8 @@
     <div class="container">
         <!-- 1. 研究背景・目的 -->
         <section id="intro">
-            <h2>1. 研究背景・目的</h2>
+            <span class="section-num">01 / BACKGROUND & PURPOSE</span>
+            <h2>研究背景・目的</h2>
             <p>現代において、「植物を育ててみたいけれど、忙しくて毎日の水やりをする時間がない」「ついつい水をやり忘れて枯らしてしまう」という課題を抱える人が多く存在します。そこで、マイコンを使って自動で土壌の水分量を管理し、適切なタイミングで水やりを行う機械を開発すれば、植物を枯らすことなく手軽に栽培を楽しめるのではないかと考え、本研究に着手しました。</p>
             
             <h3>本研究における検証内容（目的）</h3>
@@ -332,105 +438,108 @@
 
         <!-- 2. 制作の過程 -->
         <section id="process">
-            <h2>2. 制作の過程</h2>
+            <span class="section-num">02 / DEVELOPMENT LOG</span>
+            <h2>制作の過程</h2>
             <p>これまでの開発スケジュールと、各段階での主な進捗です。</p>
             
-            <!-- 5月22日 -->
-            <div class="timeline-item">
-                <span class="timeline-date">2026年5月22日 【構想】</span>
-                <h3>使用する部品や、システムそのものの構想など</h3>
-                <p>今日は、水やり機を完成させるために必要な部品を考えるために、実際に水をやる機構や使用する機器を考えました。</p>
-                <p><b>【議論】</b><br>
-                水をやるタイミングを、土壌水分センサーで土壌の水分量を測って決めるということはすぐに決まったのですが、肝心な水をやる機構をどのような手段で実現するかで少し揉めました。</p>
-                <p>実際に出た意見としては、以下の2つです。</p>
-                <ul>
-                    <li>ポンプは常に動かしたまま、水を排出するところにバルブをつけて開閉する方法</li>
-                    <li>ポンプそのものをマイコンでON/OFF制御する方法</li>
-                </ul>
-                <p>この二つの意見が出てかなり揉めましたが、回路構成や制御がシンプルになるため、最終的にはポンプ自体をON/OFFする方式に決定しました。</p>
-                <p><b>【次回の予定】</b><br>実際にマイコンを用いてプログラムの方法などを学んでいく。</p>
-                
-                <div class="img-container">
-                    <img src="IMG_0668.jpg" alt="構想のホワイトボード">
-                    <div class="img-caption">▲ 写真1：出た案をそのままホワイトボードに書いて議論した様子</div>
+            <div class="timeline-wrapper">
+                <!-- 5月22日 -->
+                <div class="timeline-item">
+                    <span class="timeline-date">2026年5月22日 ― 構想</span>
+                    <h3>使用する部品や、システムそのものの構想など</h3>
+                    <p>今日は、水やり機を完成させるために必要な部品を考えるために、実際に水をやる機構や使用する機器を考えました。</p>
+                    <p><b>【議論】</b><br>
+                    水をやるタイミングを、土壌水分センサーで土壌の水分量を測って決めるということはすぐに決まったのですが、肝心な水をやる機構をどのような手段で実現するかで少し揉めました。</p>
+                    <p>実際に出た意見としては、以下の2つです。</p>
+                    <ul>
+                        <li>ポンプは常に動かしたまま、水を排出するところにバルブをつけて開閉する方法</li>
+                        <li>ポンプそのものをマイコンでON/OFF制御する方法</li>
+                    </ul>
+                    <p>この二つの意見が出てかなり揉めましたが、回路構成や制御がシンプルになるため、最終的にはポンプ自体をON/OFFする方式に決定しました。</p>
+                    <p><b>【次回の予定】</b><br>実際にマイコンを用いてプログラムの方法などを学んでいく。</p>
+                    
+                    <div class="img-container">
+                        <img src="IMG_0668.jpg" alt="構想のホワイトボード">
+                        <div class="img-caption">▲ 写真1：出た案をそのままホワイトボードに書いて議論した様子</div>
+                    </div>
                 </div>
-            </div>
 
-            <!-- 6月5日 -->
-            <div class="timeline-item">
-                <span class="timeline-date">2026年6月5日 【構想の続きと実験】</span>
-                <h3>購入する物品を決め、実際にArduinoを用いた実験</h3>
-                <p>今日は、前回決まらなかった購入する物品を決定し、その後に実際にArduinoを用いて稼働実験をしました。</p>
-                <p><b>【実験】</b><br>
-                基礎的なプログラムを組み、実際に動くかどうかを確認しながらArduinoの使い方を学びました。</p>
-                <p>実際に行った実験：</p>
-                <ul>
-                    <li>LEDを点ける</li>
-                    <li>LEDを点滅させる（Lチカ）</li>
-                    <li>LEDをスイッチで制御する</li>
-                    <li>ON／OFFを0と1で記録する</li>
-                    <li>ブザーを鳴らす</li>
-                    <li>ブザーで音階・曲を奏でる</li>
-                </ul>
-                <p>今回の実験はプログラム担当の班員2名が実際にArduinoを動かして行いました。順調に処理が進み、かなりArduinoの扱いに慣れてくることができました。</p>
-                <p><b>【次回の予定】</b><br>Arduinoをさらに理解する。まだ触っていない班員も実際に触れて触感を掴む。</p>
-                
-                <div class="img-container">
-                    <img src="bullet board.jpg" alt="スイッチとLEDの制御実験">
-                    <div class="img-caption">▲ 写真2：ボタンを押してLEDを光らせる制御回路を構築</div>
+                <!-- 6月5日 -->
+                <div class="timeline-item">
+                    <span class="timeline-date">2026年6月5日 ― 構想の続きと実験</span>
+                    <h3>購入する物品を決め、実際にArduinoを用いた実験</h3>
+                    <p>今日は、前回決まらなかった購入する物品を決定し、その後に実際にArduinoを用いて稼働実験をしました。</p>
+                    <p><b>【実験】</b><br>
+                    基礎的なプログラムを組み、実際に動くかどうかを確認しながらArduinoの使い方を学びました。</p>
+                    <p>実際に行った実験：</p>
+                    <ul>
+                        <li>LEDを点ける</li>
+                        <li>LEDを点滅させる（Lチカ）</li>
+                        <li>LEDをスイッチで制御する</li>
+                        <li>ON／OFFを0と1で記録する</li>
+                        <li>ブザーを鳴らす</li>
+                        <li>ブザーで音階・曲を奏でる</li>
+                    </ul>
+                    <p>今回の実験はプログラム担当の班員2名が実際にArduinoを動かして行いました。順調に処理が進み、かなりArduinoの扱いに慣れてくることができました。</p>
+                    <p><b>【次回の予定】</b><br>Arduinoをさらに理解する。まだ触っていない班員も実際に触れて触感を掴む。</p>
+                    
+                    <div class="img-container">
+                        <img src="bullet board.jpg" alt="スイッチとLEDの制御実験">
+                        <div class="img-caption">▲ 写真2：ボタンを押してLEDを光らせる制御回路を構築</div>
+                    </div>
                 </div>
-            </div>
-            
-            <!-- 6月10日 -->
-            <div class="timeline-item">
-                <span class="timeline-date">2026年6月10日 【実験の続き】</span>
-                <h3>Arduino Uno Qを用いた実験</h3>
-                <p>今日は、Arduino Uno Qを使って実験をしました。</p>
-                <p><b>【実験】</b><br>
-                前回のArduino Unoよりも高性能なArduino Uno Qを使用して実験を行いました。</p>
-                <p>実際に行った実験：</p>
-                <ul>
-                    <li>Arduino Uno Qのボード上に付いているLEDを点ける</li>
-                    <li>ボード上のLEDを点滅させる</li>
-                    <li>ボード上のLEDの色（RGB）を制御する</li>
-                    <li>前回実験しなかったメンバーによるArduino Unoの基礎実験</li>
-                </ul>
-                <p>まだ発注した部品が届かないため、センサーやポンプを用いた実験はできませんでしたが、基礎実験を深めました。Arduino Uno Qは標準のUnoと異なり、ボード上に強力なプロセッサが搭載されていてマイコン側で複雑な演算ができるのが強みですが、コードの記述法が少し異なり流用できなかったため苦戦しました。</p>
-                <p>今回の「土壌水分を測って水をあげる」というシンプルな目的においては、Uno Qは過剰スペックだと判断し、基本的には通常のArduino Unoを使って進める方針としました。</p>
-                <p><b>【次回の予定】</b><br>部品が届き次第、センサーやポンプの稼働実験を開始する。</p>
                 
-                <div class="img-container">
-                    <img src="color.jpg" alt="Arduino Uno QのLED制御">
-                    <div class="img-caption">▲ 写真3：LEDの光る色や強さをPCから制御する実験</div>
+                <!-- 6月10日 -->
+                <div class="timeline-item">
+                    <span class="timeline-date">2026年6月10日 ― 実験の続き</span>
+                    <h3>Arduino Uno Qを用いた実験</h3>
+                    <p>今日は、Arduino Uno Qを使って実験をしました。</p>
+                    <p><b>【実験】</b><br>
+                    前回のArduino Unoよりも高性能なArduino Uno Qを使用して実験を行いました。</p>
+                    <p>実際に行った実験：</p>
+                    <ul>
+                        <li>Arduino Uno Qのボード上に付いているLEDを点ける</li>
+                        <li>ボード上のLEDを点滅させる</li>
+                        <li>ボード上のLEDの色（RGB）を制御する</li>
+                        <li>前回実験しなかったメンバーによるArduino Unoの基礎実験</li>
+                    </ul>
+                    <p>まだ発注した部品が届かないため、センサーやポンプを用いた実験はできませんでしたが、基礎実験を深めました。Arduino Uno Qは標準のUnoと異なり、ボード上に強力なプロセッサが搭載されていてマイコン側で複雑な演算ができるのが強みですが、コードの記述法が少し異なり流用できなかったため苦戦しました。</p>
+                    <p>今回の「土壌水分を測って水をあげる」というシンプルな目的においては、Uno Qは過剰スペックだと判断し、基本的には通常のArduino Unoを使って進める方針としました。</p>
+                    <p><b>【次回の予定】</b><br>部品が届き次第、センサーやポンプの稼働実験を開始する。</p>
+                    
+                    <div class="img-container">
+                        <img src="color.jpg" alt="Arduino Uno QのLED制御">
+                        <div class="img-caption">▲ 写真3：LEDの光る色や強さをPCから制御する実験</div>
+                    </div>
                 </div>
-            </div>
 
-            <!-- 10月2日 -->
-            <div class="timeline-item">
-                <span class="timeline-date">2026年10月2日 【回路設計&制作開始】</span>
-                <h3>土壌水分センサーを用いた制御プログラミング</h3>
-                <p>発注していた部品がようやく手元に届いたため、一気に制作を進めていきます！</p>
-                <p><b>【実験】</b><br>
-                ついに土壌水分センサーを用いた実習実験を行いました。</p>
-                <p>実際に行った実験：</p>
-                <ul>
-                    <li>土壌センサーで水分量を計測し、数値が閾値を超えたら一方のLEDを消灯し、もう一方のLEDを点灯させる制御</li>
-                </ul>
-                <p>水分量が一定以上になると狙い通りLEDが切り替わり、自動制御の要となるプログラミングは大成功でした。今回はArduino Unoで実験を行いましたが、実験中に<b>「データベースを使って、いつどれだけ水やりをしたかの履歴を記録・管理したい」</b>という新たなアイデアが出ました。</p>
-                <p>ネット経由でデータベース管理を行うにはArduino Uno Qが必要となるため、一度見送っていたUno Qを再度活用する方針で進めていくことになりました。</p>
-                <p><b>【次回の予定】</b><br>追加物品が届き次第、ポンプの稼働実験を行う。</p>
-                
-                <div class="img-container">
-                    <img src="IMG_0761.jpeg" alt="土壌センサーによるLED切替実験">
-                    <div class="img-caption">▲ 写真4：水分量の変化に反応してLEDの点灯が切り替わる様子</div>
+                <!-- 10月2日 -->
+                <div class="timeline-item">
+                    <span class="timeline-date">2026年10月2日 ― 回路設計＆制作開始</span>
+                    <h3>土壌水分センサーを用いた制御プログラミング</h3>
+                    <p>発注していた部品がようやく手元に届いたため、一気に制作を進めていきます！</p>
+                    <p><b>【実験】</b><br>
+                    ついに土壌水分センサーを用いた実習実験を行いました。</p>
+                    <p>実際に行った実験：</p>
+                    <ul>
+                        <li>土壌センサーで水分量を計測し、数値が閾値を超えたら一方のLEDを消灯し、もう一方のLEDを点灯させる制御</li>
+                    </ul>
+                    <p>水分量が一定以上になると狙い通りLEDが切り替わり、自動制御の要となるプログラミングは大成功でした。今回はArduino Unoで実験を行いましたが、実験中に<b>「データベースを使って、いつどれだけ水やりをしたかの履歴を記録・管理したい」</b>という新たなアイデアが出ました。</p>
+                    <p>ネット経由でデータベース管理を行うにはArduino Uno Qが必要となるため、一度見送っていたUno Qを再度活用する方針で進めていくことになりました。</p>
+                    <p><b>【次回の予定】</b><br>追加物品が届き次第、ポンプの稼働実験を行う。</p>
+                    
+                    <div class="img-container">
+                        <img src="IMG_0761.jpeg" alt="土壌センサーによるLED切替実験">
+                        <div class="img-caption">▲ 写真4：水分量の変化に反応してLEDの点灯が切り替わる様子</div>
+                    </div>
                 </div>
             </div>
-            
         </section>
 
         <!-- 3. システムの概要 -->
         <section id="system">
-            <h2>3. システムの概要</h2>
+            <span class="section-num">03 / SYSTEM OVERVIEW</span>
+            <h2>システムの概要</h2>
             <p>本システムは、土壌水分センサーによって常に土の乾燥具合を監視します。水分量が設定した基準値（閾値）を下回ったことをマイコンが検知すると、給水用ポンプに信号を送り、自動で水を供給する仕組みです。</p>
             
             <div class="image-box">
@@ -440,7 +549,8 @@
 
         <!-- 4. ハードウェアの構成 -->
         <section id="hardware">
-            <h2>4. ハードウェアの構成</h2>
+            <span class="section-num">04 / HARDWARE</span>
+            <h2>ハードウェアの構成</h2>
             <p>本システムの構築にあたり、使用した主要部品の一覧です。</p>
             
             <h3>主要部品一覧</h3>
@@ -488,7 +598,8 @@
 
         <!-- 5. ソフトウェアの処理フロー -->
         <section id="software">
-            <h2>5. ソフトウェアの処理フロー</h2>
+            <span class="section-num">05 / SOFTWARE</span>
+            <h2>ソフトウェアの処理フロー</h2>
             <p>マイコン（Arduino）に書き込んだ制御プログラムの処理手順（アルゴリズム）について記述します。</p>
             <p>※水分量の測定手順や、ポンプ駆動条件のフローチャートを掲載予定です。</p>
             
@@ -499,7 +610,8 @@
 
         <!-- 6. 成果と今後の課題 -->
         <section id="result">
-            <h2>6. 成果と今後の課題</h2>
+            <span class="section-num">06 / RESULTS & FUTURE</span>
+            <h2>成果と今後の課題</h2>
             
             <h3>実験結果・検証成果</h3>
             <p>実際に自動水やり機を稼働させ、植物を栽培した実験結果をここに記述します。</p>
@@ -514,7 +626,8 @@
 
         <!-- 7. お問い合わせ -->
         <section id="contact">
-            <h2>7. お問い合わせ</h2>
+            <span class="section-num">07 / CONTACT</span>
+            <h2>お問い合わせ</h2>
             <p>本研究に関するご質問やご感想などがありましたら、以下のフォームよりお気軽にご連絡ください。</p>
             
             <form action="https://formspree.io/f/xvkgoegv" method="POST">
@@ -533,16 +646,16 @@
                     <textarea id="message" name="message" rows="5" class="form-control" required></textarea>
                 </div>
                 
-                <div style="text-align: center; margin-top: 30px;">
+                <div style="text-align: center; margin-top: 35px;">
                     <button type="submit" class="btn-submit">送信する</button>
                 </div>
             </form>
         </section>
 
         <!-- サンクス画像 -->
-        <div class="img-container" style="margin-top: 40px;">
-            <img src="King.jpg" alt="Thank you" style="max-width: 220px; border-radius: 12px;">
-            <div class="img-caption" style="font-size: 0.95rem; margin-top: 10px;">Thank you!</div>
+        <div class="img-container" style="margin-top: 50px;">
+            <img src="King.jpg" alt="Thank you" style="max-width: 220px;">
+            <div class="img-caption serif" style="font-size: 1rem; color: var(--primary); margin-top: 12px;">Thank you for visiting!</div>
         </div>
     </div>
 
